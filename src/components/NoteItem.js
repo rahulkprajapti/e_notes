@@ -4,14 +4,15 @@ const NoteItem = (props) => {
   const { note } = props;
   return (
     <div> 
-      <div class="card mx-3">
-        <div class="card-body">
-          <h5 class="card-title">{note.title}</h5>
-          <p class="card-text">{note.description}
+      <div className="card mx-3">
+        <div className="card-body">
+          <div className="d-flex align-items-center">
+          <h5 className="card-title">{note.title}</h5>
+          </div>
+          <p className="card-text">{note.description}
           </p>
-          <a href="#" class="btn btn-primary">
-            Go somewhere
-          </a>
+          <i className="fa-solid fa-trash-can mx-2"></i>
+          <i className="fa-sharp fa-solid fa-file-pen mx-2"></i>
         </div>
       </div>
     </div>
