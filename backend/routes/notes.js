@@ -61,8 +61,7 @@ router.put("/updatenotes/:id", fetchuser, async (req, res) => {
     let notes = await Notes.findById(req.params.id);
     if (!notes) {
       return res.status(400).send("Not Found");
-    }
-    console.log('notes.user=>', notes.user);
+    } 
     if (notes.user.toString() !== req.user.id) {
       return res.status(401).send("Not Allowed");
     }

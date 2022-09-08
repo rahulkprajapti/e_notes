@@ -23,8 +23,8 @@ const NoteState = (props) => {
   };
 
   // Add a note
-  const addNote = async (title, tag, description) => { 
-    let url = `${host}/api/notes/addnotes`; 
+  const addNote = async (title, tag, description) => {
+    let url = `${host}/api/notes/addnotes`;
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -38,10 +38,10 @@ const NoteState = (props) => {
     });
     const note = await response.json();
     // concat note in notes array
-    setNotes(notes.concat(note))
+    setNotes(notes.concat(note));
   };
   // Delete a note
-  const deleteNote = async (id) => { 
+  const deleteNote = async (id) => {
     // API Call
     let url = `${host}/api/notes/deletenotes/${id}`;
     const response = await fetch(url, {
@@ -63,6 +63,7 @@ const NoteState = (props) => {
   const editNote = async (id, tag, title, description) => {
     // Api Call---
     let url = `${host}/api/notes/updatenotes/${id}`;
+    console.log("edit details==>", url);
     const response = await fetch(url, {
       method: "PUT",
       headers: {
@@ -74,19 +75,19 @@ const NoteState = (props) => {
 
       body: JSON.stringify({ tag, title, description }),
     });
-    const json = response.json();
-    let newNote = JSON.parse(JSON.stringify(notes));
+    const json = await response.json();
+    let newNotes = JSON.parse(JSON.stringify(notes));
     //-------------
-    for (let index = 0; index < newNote.length; index++) {
-      const element = newNote[index];
+    for (let index = 0; index < newNotes.length; index++) {
+      const element = newNotes[index];
       if (element._id === id) {
-        newNote[index].tag = tag;
-        newNote[index].description = description;
-        newNote[index].title = title;
-        break;
+        newNotes[index].title = title;
+        newNotes[index].description = description;
+        newNotes[index].tag = tag; 
+        break; 
       }
-      setNotes(newNote);
     }
+    setNotes(newNotes);
   };
   return (
     <noteContext.Provider

@@ -6,7 +6,7 @@ import NoteItem from "./NoteItem";
 import AddNote from "./AddNote";
 const Notes = () => {
   const context = useContext(noteContext);
-  const { notes, getNotes, editNote} = context;
+  const { notes, getNotes, editNote } = context;
   useEffect(() => {
     getNotes();
   }, []);
@@ -27,11 +27,11 @@ const Notes = () => {
       edescription: currentNote.description,
     });
   };
-  
-  const handleClick = (e) => { 
+
+  const handleClick = (e) => {
     // Invoke edit note function before close the box
-    editNote(note.id, note.etag, note.etitle,note.edescription);
-     refClose.current.click();
+    editNote(note.id, note.etag, note.etitle, note.edescription);
+    refClose.current.click();
   };
   const onChange = (e) => {
     setNote({
@@ -88,6 +88,8 @@ const Notes = () => {
                     value={note.etitle}
                     placeholder="Enter Title"
                     onChange={onChange}
+                    minLength={5}
+                    required 
                   />
                 </div>
                 <div className="form-group">
@@ -100,6 +102,8 @@ const Notes = () => {
                     id="edescription"
                     placeholder="Description"
                     onChange={onChange}
+                    minLength={5}
+                    required
                   />
                 </div>
                 <div className="form-group">
@@ -112,6 +116,8 @@ const Notes = () => {
                     id="etag"
                     placeholder="Tag"
                     onChange={onChange}
+                    minLength={3}
+                    required
                   />
                 </div>
               </form>
@@ -126,6 +132,7 @@ const Notes = () => {
                 Close
               </button>
               <button
+              disabled={note.etitle.length<5 || note.edescription.length<5}
                 onClick={handleClick}
                 type="button"
                 className="btn btn-primary"
@@ -137,6 +144,10 @@ const Notes = () => {
         </div>
       </div>
       <h1>Your Notes </h1>
+      <div className="container">
+      {notes.length===0 && 'No notes to display'}
+      </div>
+      
       <div className="row my-3">
         {notes.map((note) => {
           return (
