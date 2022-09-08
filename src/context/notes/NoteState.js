@@ -23,10 +23,8 @@ const NoteState = (props) => {
   };
 
   // Add a note
-  const addNote = async (title, tag, description) => {
-    console.log("Adding a new note");
-    let url = `${host}/api/notes/addnotes`;
-    console.log("url==>", url);
+  const addNote = async (title, tag, description) => { 
+    let url = `${host}/api/notes/addnotes`; 
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -38,20 +36,24 @@ const NoteState = (props) => {
 
       body: JSON.stringify({ title, description, tag }),
     });
-    const note = {
-      _id: "5",
-      user: "62e2d499685beae374456f1f",
-      title: title,
-      description: description,
-      tag: tag,
-      date: "2022-08-23T12:33:35.861Z",
-      __v: 0,
-    };
-    setNotes(notes.concat(note));
+    const note = await response.json();
+    // concat note in notes array
+    setNotes(notes.concat(note))
   };
   // Delete a note
-  const deleteNote = (id) => {
-    console.log("Deleting note using id:->", id);
+  const deleteNote = async (id) => { 
+    // API Call
+    let url = `${host}/api/notes/deletenotes/${id}`;
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJlMmQ0OTk2ODViZWFlMzc0NDU2ZjFmIn0sImlhdCI6MTY2MTI0OTM4MX0.EyjjMjPua2xCFI2AXK2v9jtApSXkZApiMXCAbnozjcU",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+    //------------------------
     const newNote = notes.filter((note) => {
       return note._id !== id;
     });
@@ -73,15 +75,17 @@ const NoteState = (props) => {
       body: JSON.stringify({ tag, title, description }),
     });
     const json = response.json();
-
+    let newNote = JSON.parse(JSON.stringify(notes));
     //-------------
-    for (let index = 0; index < notes.length; index++) {
-      const element = notes[index];
+    for (let index = 0; index < newNote.length; index++) {
+      const element = newNote[index];
       if (element._id === id) {
-        element.tag = tag;
-        element.description = description;
-        element.title = title;
+        newNote[index].tag = tag;
+        newNote[index].description = description;
+        newNote[index].title = title;
+        break;
       }
+      setNotes(newNote);
     }
   };
   return (
