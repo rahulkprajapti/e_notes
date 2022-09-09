@@ -35,7 +35,7 @@ const AddNote = () => {
             id="title"
             name="title"
             value={note.title}
-            placeholder="Enter Title"
+            placeholder="Enter Title "
             onChange={onChange}
             minLength={5}
             required
