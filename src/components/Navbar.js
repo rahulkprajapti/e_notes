@@ -1,8 +1,13 @@
 import React, { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  let history = useNavigate();
   let location = useLocation();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    history("/login");
+  };
   useEffect(() => {}, [location]);
   return (
     <div>
@@ -44,15 +49,15 @@ const Navbar = () => {
                 About
               </Link>
             </li>
-          </ul>
-          <form className="d-flex">
+          </ul>{" "}
+          {!localStorage.getItem('token')?<form className="d-flex">
             <Link className="btn btn-primary mx-1" to="/login" role="button">
               Login
             </Link>
             <Link className="btn btn-primary mx-1" to="/signup" role="button">
               Signup
-            </Link>
-          </form>
+            </Link>  
+          </form>: <button className="btn btn-primary mx-1" onClick={handleLogout}>Logout</button>}
         </div>
       </nav>
     </div>

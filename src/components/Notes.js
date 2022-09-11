@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useContext, useRef } from "react";
 // UseRef Hook is used to pas the reference to the element
 import noteContext from "../context/notes/noteContext";
 import NoteItem from "./NoteItem";
 import AddNote from "./AddNote";
-const Notes = () => {
+const Notes = (props) => {
+  let history = useNavigate();
   const context = useContext(noteContext);
   const { notes, getNotes, editNote } = context;
   useEffect(() => {
-    getNotes();
+    // If token is not null then show all notes else redirect to login page 
+    if(localStorage.getItem('token')!=null || localStorage.getItem('token')!=undefined){
+      getNotes();
+    }else{ 
+      history("/login");  
+    }
+    
   }, []);
   const ref = useRef(null);
   const refClose = useRef(null);
@@ -26,12 +34,14 @@ const Notes = () => {
       etag: currentNote.tag,
       edescription: currentNote.description,
     });
+     
   };
 
   const handleClick = (e) => {
     // Invoke edit note function before close the box
     editNote(note.id, note.etag, note.etitle, note.edescription);
     refClose.current.click();
+    props.showAlert("Note Updated successfully ","success");
   };
   const onChange = (e) => {
     setNote({
@@ -44,7 +54,7 @@ const Notes = () => {
   // https://getbootstrap.com/docs/5.0/components/modal/
   return (
     <div>
-      <AddNote></AddNote>
+      <AddNote showAlert={props.showAlert}></AddNote>
 
       <button
         ref={ref}
@@ -151,7 +161,7 @@ const Notes = () => {
       <div className="row my-3">
         {notes.map((note) => {
           return (
-            <NoteItem key={note._id} note={note} updateNote={updateNote} />
+            <NoteItem key={note._id} note={note} updateNote={updateNote} showAlert={props.showAlert}/>
           );
         })}
       </div>

@@ -13,11 +13,11 @@ const NoteState = (props) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJlMmQ0OTk2ODViZWFlMzc0NDU2ZjFmIn0sImlhdCI6MTY2MTI0OTM4MX0.EyjjMjPua2xCFI2AXK2v9jtApSXkZApiMXCAbnozjcU",
+        "auth-token":localStorage.getItem('token'),
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
+    console.log('response==>', response);
     const json = await response.json();
     setNotes(json);
   };
@@ -29,8 +29,7 @@ const NoteState = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJlMmQ0OTk2ODViZWFlMzc0NDU2ZjFmIn0sImlhdCI6MTY2MTI0OTM4MX0.EyjjMjPua2xCFI2AXK2v9jtApSXkZApiMXCAbnozjcU",
+        "auth-token":localStorage.getItem('token'),
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
 
@@ -44,12 +43,11 @@ const NoteState = (props) => {
   const deleteNote = async (id) => {
     // API Call
     let url = `${host}/api/notes/deletenotes/${id}`;
-    const response = await fetch(url, {
+    await fetch(url, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJlMmQ0OTk2ODViZWFlMzc0NDU2ZjFmIn0sImlhdCI6MTY2MTI0OTM4MX0.EyjjMjPua2xCFI2AXK2v9jtApSXkZApiMXCAbnozjcU",
+        "auth-token":localStorage.getItem('token'),
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
@@ -68,8 +66,7 @@ const NoteState = (props) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJlMmQ0OTk2ODViZWFlMzc0NDU2ZjFmIn0sImlhdCI6MTY2MTI0OTM4MX0.EyjjMjPua2xCFI2AXK2v9jtApSXkZApiMXCAbnozjcU",
+        "auth-token":localStorage.getItem('token'),
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
 

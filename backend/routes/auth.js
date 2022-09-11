@@ -64,23 +64,25 @@ router.post(
     body("password", "Enter a valid password ").exists(),
   ],
   async (req, res) => {
+    let success = false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ success,errors: errors.array() });
     }
     try {
       const { email, password } = req.body;
-      let user = await User.findOne({ email });
+      console.log(email, password);
+      let user = await User.findOne({ email, password });
       if (!user) {
         return res
           .status(400)
-          .json({ error: "Please try to login with your correct credentails" });
+          .json({ success, error: "Please try to login with your correct credentails" });
       }
       const passwordComapre = bcrypt.compare(password, user.password);
       if (!passwordComapre) {
         return res
           .status(400)
-          .json({ error: "Please try to login with your correct credentails" });
+          .json({ success, error: "Please try to login with your correct credentails" });
       }
       // creating sign for JWT token
       const data = {
@@ -89,7 +91,7 @@ router.post(
         },
       };
       const authToken = jwt.sign(data, JWT_SECRET);
-      res.status(200).json({ authToken, message: "Login successfully...!" });
+      res.status(200).json({ success: true, authToken, message: "Login successfully...!" });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal server error..");

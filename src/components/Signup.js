@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Signup = (props) => {
     let history = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
@@ -20,15 +20,13 @@ const Signup = () => {
       body: JSON.stringify({ name, email, password }),
     });
     const json = await response.json();
-
-    console.log(json);
     if (json.success) {
       // Save the auth token and redirect
-      localStorage.setItem("token", json.authtoken);
-      history("/");
-      alert("New User Created");
+      localStorage.setItem("token", json.authToken);
+      history("/"); 
+      props.showAlert("Account creacted successfully ","success");
     } else {
-      alert("Invalid credentials");
+        props.showAlert("Invalid Credentials","danger");
     }
   };
 
@@ -48,9 +46,6 @@ const Signup = () => {
             placeholder="Enter Name"
             onChange={onChange}
           />
-          <small id="emailHelp" className="form-text text-muted">
-            We'll never share your email with anyone else.
-          </small>
         </div>
         <div className="form-group">
           <label htmlFor="email">Email address</label>
