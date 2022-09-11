@@ -71,8 +71,7 @@ router.post(
     }
     try {
       const { email, password } = req.body;
-      console.log(email, password);
-      let user = await User.findOne({ email, password });
+      let user = await User.findOne({ email });
       if (!user) {
         return res
           .status(400)
